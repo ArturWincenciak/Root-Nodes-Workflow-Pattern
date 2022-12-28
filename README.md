@@ -31,5 +31,39 @@ To use the framework, you will need to create your own classes that inherit from
 
 This is a console application demonstrating the usage of the `RootAndNodesPattern` library. The application displays a message, asks the user a question, and based on their answer, either prints a series of asterisks or displays another message. The user can then exit the application by pressing any key.
 
+See full implementation in [Root-Nodes-Workflow-Pattern/RootAndNodesPattern/RootAndNodesConsoleExample](https://github.com/ArturWincenciak/Root-Nodes-Workflow-Pattern/tree/master/RootAndNodesPattern/RootAndNodesConsoleExample) directory. Here you can only see a snippet of the main code:
+
+```csharp
+class Program
+{
+	static void Main(string[] args)
+	{
+		Console.WriteLine("OGNIA...");
+
+		var root = new ExampleTree("teo");
+		Node showMessage = new MessageNode(root, "Welcome", "This is start node...");
+		Node asterisks = new AsteriskPrinterkNode(root, "Asterisks", 50);
+		Node question = new YesOrNoMenuNode(root, "Question about asterisk", "Do you want to write asterisks?");
+		Node notAsterisksMessage = new MessageNode(root, "Not asterisk", "You didn't want to asterisks.");
+		Node wrongChoiceMessage = new MessageNode(root, "Bad choice.", "Bad choice. Try once again.");
+		Node endMessage = new MessageNode(root, "End", "Fine.");
+
+		showMessage.JoinChildNode(question);
+		question.JoinChildNode(YesOrNoMenuNode.YES_OUTPUT, asterisks);
+		question.JoinChildNode(YesOrNoMenuNode.NO_OUTPUT, notAsterisksMessage);
+		question.JoinChildNode(wrongChoiceMessage);
+		wrongChoiceMessage.JoinChildNode(question);
+		asterisks.JoinChildNode(endMessage);
+		notAsterisksMessage.JoinChildNode(endMessage);
+
+		root.SetStartNode(showMessage);
+		root.Run();
+
+		while (true)
+			root.OnKeyboard(Console.ReadKey().KeyChar);
+	}
+}
+```
+
 
 
