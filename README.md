@@ -1,4 +1,4 @@
-# Root and Nodes Pattern
+# Root and Nodes library
 
 This is a framework for implementing a tree-like structure in C#. It consists of two main classes: Root and Node.
 
